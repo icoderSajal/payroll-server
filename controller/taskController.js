@@ -54,25 +54,26 @@ const getSingletask = async (req, res) => {
     const { id } = req.params;
     const task = await Task.findById({ _id: id });
     console.log(task);
+
     return res.status(200).json({ success: true, task });
   } catch (error) {
     res.status(500).json({ success: false, error });
   }
 };
 const updateTasks = async (req, res) => {
-  // try {
-  //   const { id } = req.params;
-  //   const leave = await Leave.findByIdAndUpdate(
-  //     { _id: id },
-  //     { status: req.body.status }
-  //   );
-  //   if (!leave) {
-  //     res.status(500).json({ success: false, error: "leave not founded" });
-  //   }
-  //   return res.status(200).json({ success: true });
-  // } catch (error) {
-  //   res.status(500).json({ success: false, error: "Internal server error" });
-  // }
+  try {
+    const { id } = req.params;
+    const { employeeId, taskType, startDate, endDate, comments, status } =
+      req.body;
+    const updataTask = await Task.findByIdAndUpdate(
+      { _id: id },
+      { employeeId, taskType, startDate, endDate, comments, status }
+    );
+
+    return res.status(200).json({ success: true, updataTask });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
 };
 
 export { addTasks, getAlltasks, updateTasks, gettaskByUserId, getSingletask };
