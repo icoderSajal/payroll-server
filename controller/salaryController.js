@@ -37,9 +37,27 @@ const getSalary = async (req, res) => {
     }
     return res.status(200).json({ success: true, salaries: salary });
   } catch (error) {
-    console.error("Error fetching salary:", error.message);
+    //console.error("Error fetching salary:", error.message);
     return res.status(500).json({ success: false, error: "Server Error" });
   }
 };
 
-export { addSalary, getSalary };
+const allEmployeSalaries = async (req, res) => {
+  try {
+    let salary;
+    salary = await Salary.find().populate("employeeId", "employeeId");
+    if (!salary || salary.length < 1) {
+      const employee = await Employee.findOne({ userId: id });
+      salary = await Salary.find({ employeeId: employee._id }).populate(
+        "employeeId",
+        "employeeId"
+      );
+    }
+    return res.status(200).json({ success: true, salaries: salary });
+  } catch (error) {
+    //console.error("Error fetching salary:", error.message);
+    return res.status(500).json({ success: false, error: "Server Error" });
+  }
+};
+
+export { addSalary, getSalary, allEmployeSalaries };
